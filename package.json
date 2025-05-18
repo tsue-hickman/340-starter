@@ -12,10 +12,21 @@
   "dependencies": {
     "cse340": "file:",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
     "pg": "^8.8.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsue-hickman/340-starter.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/tsue-hickman/340-starter/issues"
+  },
+  "homepage": "https://github.com/tsue-hickman/340-starter#readme"
 }

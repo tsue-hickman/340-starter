@@ -1,30 +1,31 @@
 /* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
+ * This is the application server
+ * ******************************************/
 const express = require("express")
-const env = require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
 
-/* ***********************
- * Routes
- *************************/
-app.use(static)
+/* ******************************************
+ * Set EJS as view engine and serve static files
+ * ******************************************/
+app.set("view engine", "ejs")
+app.use(express.static("public"))
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+/* ******************************************
+ * Default GET route
+ * ******************************************/
+app.get("/", (req, res) => {
+  res.render("index")
+})
+
+/* ******************************************
+ * Server host name and port
+ * ******************************************/
+const HOST = 'localhost'
+const PORT = 5500
 
 /* ***********************
  * Log statement to confirm server operation
- *************************/
-app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
+ * ***********************/
+app.listen(PORT, () => {
+  console.log(`trial app listening on ${HOST}:${PORT}`)
 })
