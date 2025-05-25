@@ -86,7 +86,7 @@ main {
   border: 1px solid #ccc;
   padding: 15px;
   margin-bottom: 20px;
-  background-image: url("/images/pattern.jpg");
+  background-image: url("/images/pattern.jpg"); /* Ensure pattern.jpg exists */
   background-size: auto;
   border-radius: 5px;
 }
@@ -216,6 +216,36 @@ footer {
   margin-top: 20px;
 }
 
+/* Inventory Grid Styles (Moved outside media query for all screen sizes) */
+#inv-display {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+}
+
+#inv-display li {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 200px;
+}
+
+#inv-display li img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.namePrice {
+  text-align: center;
+}
+
+.namePrice h2 a {
+  text-decoration: none;
+  color: #333;
+}
+
 /* Media Query for Tablets and larger screens */
 @media screen and (min-width: 768px) {
   .header-content,
@@ -253,5 +283,10 @@ footer {
 
   .upgrades {
     grid-column: 1 / -1;
+  }
+
+  /* Optional: Adjust inventory grid for larger screens */
+  #inv-display li {
+    width: 250px; /* Slightly larger on bigger screens */
   }
 }
