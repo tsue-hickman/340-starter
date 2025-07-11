@@ -3,7 +3,10 @@ require("dotenv").config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === "development" ? { rejectUnauthorized: false } : true
+  ssl: {
+    rejectUnauthorized: false, // Allow self-signed certificates
+    require: true // Enforce SSL
+  }
 });
 
 module.exports = {
