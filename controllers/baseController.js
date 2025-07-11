@@ -1,13 +1,15 @@
-const utilities = require("../utilities/");
+const invModel = require("../models/inventory-model");
+const Util = require("../utilities/");
 
 const baseController = {};
 
 baseController.buildHome = async function(req, res, next) {
-  const nav = await utilities.getNav();
-  res.render("index", {
-    title: "Home",
-    nav
-  });
+  try {
+    const nav = await Util.getNav();
+    res.render("index", { title: "Home", nav });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = baseController;
