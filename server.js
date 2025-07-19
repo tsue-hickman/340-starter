@@ -8,9 +8,11 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities/")
 
 app.set("view engine", "ejs")
+app.set("views", "./views")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
 
+app.use(express.static("public"))
 app.use(static)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)

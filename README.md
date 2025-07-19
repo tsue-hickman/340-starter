@@ -112,14 +112,11 @@ File Structure
 │ │ ├── navigation.ejs
 │ │ └── footer.ejs
 │ ├── inventory/
-│ │ ├── index.ejs
-│ │ ├── detail.ejs
-│ │ ├── management.ejs
-│ │ ├── add-classification.ejs
-│ │ └── add-inventory.ejs
-│ └── account/
-│ ├── management.ejs
-│ └── update.ejs
+│ │ ├── classification.ejs
+│ │ └── detail.ejs
+│ ├── errors/
+│ │ └── error.ejs
+│ └── index.ejs
 └── README-cse340.md
 
 Setup Instructions

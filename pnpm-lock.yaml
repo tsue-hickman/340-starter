@@ -24,11 +24,11 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       pg:
-        specifier: ^8.16.3
+        specifier: 8.16.3
         version: 8.16.3
     devDependencies:
       nodemon:
-        specifier: ^3.1.0
+        specifier: ^3.1.10
         version: 3.1.10
 
 packages:
