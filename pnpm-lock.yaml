@@ -24,7 +24,7 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       pg:
-        specifier: ^8.8.0
+        specifier: ^8.16.3
         version: 8.16.3
     devDependencies:
       nodemon:
@@ -638,6 +638,7 @@ snapshots:
       dotenv: 16.6.1
       ejs: 3.1.10
       express: 4.21.2
+      express-ejs-layouts: 2.5.1
       pg: 8.16.3
     transitivePeerDependencies:
       - pg-native

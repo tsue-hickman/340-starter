@@ -2,9 +2,12 @@
 <%- include('../../partials/navigation') %>
 
 <main>
-  <% if (title) { %>
   <h1><%= title %></h1>
-  <% } else { %> <% res.redirect('/') %> <% } %> <%# messages() %> <%- grid %>
+  <p><%= message %></p>
+  <p>
+    Oops! Looks like our server took a detour. Try another route or contact our
+    support team!
+  </p>
 </main>
 
 <%- include('../../partials/footer') %>

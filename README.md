@@ -49,3 +49,139 @@ When you installed Git and cloned the remote repository in week 1, you should ha
 1. Go to http://localhost:5500 in a browser tab. Nothing should be visible as the server has not been setup to repond to that route.
 2. Add "/filename.html" to the end of the URL (replacing filename with the name of the file you moved to the public folder).
 3. You should see that page in the browser.
+
+CSE 340 Project Continuity Guide
+Project Overview
+
+Course: CSE 340 (Web Backend Development)
+Student: Tayler Hickman
+Project: CSE Motors (car dealership web app)
+Directory: C:\Users\Hickb\OneDrive\cse_340_starter_file\340-starter
+Technologies: Node.js, Express, EJS, PostgreSQL, Render.com
+Render URL: https://cse340-app-al4m.onrender.com
+GitHub: https://github.com/tsue-hickman/340-starter
+Database: PostgreSQL (host: 143.198.247.195, port: 5432, user: hickman76907, db: hickman76907)
+
+Current Status (July 16, 2025)
+
+Progress: Installed PostgreSQL 17.5, fixed psql PATH, fixed SSL/SASL errors, applied schema.sql to create classification and inventory tables, set PNPM_HOME to fix pnpm global bin directory for Assignment 1.
+Fixes Applied:
+Installed PostgreSQL (C:\Program Files\PostgreSQL\17\bin), added to PATH.
+Fixed database/index.js (ssl: { rejectUnauthorized: false, sslmode: "require"}), removed cse340 dependency.
+Applied schema.sql to create classification table with rows (Sport, SUV, Sedan, Truck).
+Set PNPM_HOME=C:\Users\Hickb\AppData\Local\pnpm and added to PATH.
+
+Issues Resolved: psql not found, password authentication, SSL errors, SASL errors, dependency issues, missing classification table.
+Pending: Update pnpm to v10.13.1 (stuck at v10.7.0 due to ERR_PNPM_GLOBAL_PNPM_INSTALL).
+
+File Structure
+340-starter/
+├── .env
+├── .gitignore
+├── package.json
+├── server.js
+├── controllers/
+│ ├── baseController.js
+│ └── invController.js
+├── database/
+│ ├── index.js
+│ ├── schema.sql
+│ ├── assignment2.sql
+│ └── rebuild.sql
+├── models/
+│ ├── inventory-model.js
+│ └── account-model.js
+├── public/
+│ ├── css/
+│ │ └── style.css
+│ └── images/
+│ ├── site/
+│ ├── upgrades/
+│ └── vehicles/
+├── routes/
+│ ├── inventoryRoute.js
+│ └── static.js
+├── utilities/
+│ └── index.js
+├── views/
+│ ├── layouts/
+│ │ └── layout.ejs
+│ ├── partials/
+│ │ ├── head.ejs
+│ │ ├── header.ejs
+│ │ ├── navigation.ejs
+│ │ └── footer.ejs
+│ ├── inventory/
+│ │ ├── index.ejs
+│ │ ├── detail.ejs
+│ │ ├── management.ejs
+│ │ ├── add-classification.ejs
+│ │ └── add-inventory.ejs
+│ └── account/
+│ ├── management.ejs
+│ └── update.ejs
+└── README-cse340.md
+
+Setup Instructions
+
+Install PostgreSQL:
+
+Installed at C:\Program Files\PostgreSQL\17.
+Added to PATH: C:\Program Files\PostgreSQL\17\bin.
+Verify: psql --version.
+
+Database:
+
+Run in psql:psql -h 143.198.247.195 -p 5432 -U hickman76907 -d hickman76907 -f database/schema.sql
+
+Update .env:DATABASE_URL=postgresql://hickman76907:706376907@143.198.247.195:5432/hickman76907?ssl=true
+NODE_ENV=development
+NODE_VERSION=22.13.0
+
+Set Render.com environment variables: DATABASE_URL, NODE_ENV=production, NODE_VERSION=22.13.0.
+
+Dependencies:
+Remove-Item -Recurse -Force node_modules
+Remove-Item package-lock.json -ErrorAction Ignore
+pnpm install
+pnpm add ejs express express-ejs-layouts pg@latest nodemon
+
+Run Locally:
+pnpm run dev
+Start-Process "http://localhost:5500"
+
+Deploy:
+
+Commit: git add .; git commit -m "Message"; git push origin main
+Manual deploy on Render.com: “Clear build cache & deploy”.
+
+Assignments Completed
+
+Week 2: Node.js/Express app, EJS templates, partials, Render.com deployment.
+Assignment 1: Home view with Delorean section, upgrades, reviews (nearly complete, pending local testing and deployment).
+Assignment 2: SQL queries and rebuild script (pending).
+Assignment 3: Vehicle detail view (pending).
+Assignment 4: Inventory management views (pending).
+Assignment 5: Account management with JWT (pending).
+Enhancement: Vehicle search (pending).
+
+Troubleshooting
+
+pnpm Error: If ERR_PNPM_GLOBAL_PNPM_INSTALL, try npm install -g pnpm@10.13.1 or proceed with v10.7.0.
+Database Errors: Verify tables in psql (\dt, SELECT \* FROM classification;).
+Connection Issues: Ensure ssl: { rejectUnauthorized: false, sslmode: "require"} in database/index.js, use DATABASE_URL in .env.
+Deployment Issues: Check package.json for express-ejs-layouts and pg@latest, use 0.0.0.0 and process.env.PORT in server.js.
+Windows Commands: Use Start-Process, pnpm run dev.
+
+Next Steps
+
+Update pnpm to v10.13.1, test locally, deploy, and submit Assignment 1 by July 16.
+Complete Assignment 2 by July 17.
+Share Weeks 2–5 instructions.
+Test locally (http://localhost:5500) and on Render.com (https://cse340-app-al4m.onrender.com).
+
+Contact
+
+GitHub: https://github.com/tsue-hickman/340-starter
+Render Dashboard: https://dashboard.render.com/
+Database Backup: http://143.198.247.195/manage/index.php

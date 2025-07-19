@@ -1,13 +1,1 @@
-<% const navList = nav %>
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <% navList.forEach(nav => { %>
-    <li>
-      <a href="/inv/type/<%= nav.classification_id %>"
-        ><%= nav.classification_name %></a
-      >
-    </li>
-    <% }) %>
-  </ul>
-</nav>
+<%- nav %>

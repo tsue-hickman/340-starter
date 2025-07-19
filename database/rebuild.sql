@@ -1,7 +1,14 @@
-/* Drop tables if they exist */
+/* Drop tables and types if they exist */
+DROP TABLE IF EXISTS account;
+
 DROP TABLE IF EXISTS inventory;
 
 DROP TABLE IF EXISTS classification;
+
+DROP TYPE IF EXISTS account_type;
+
+/* Create account_type ENUM */
+CREATE TYPE account_type AS ENUM ('Client', 'Employee', 'Admin');
 
 /* Create classification table */
 CREATE TABLE
@@ -97,4 +104,15 @@ VALUES
         20000,
         'Red',
         4
+    );
+
+/* Create account table */
+CREATE TABLE
+    account (
+        account_id SERIAL PRIMARY KEY,
+        account_firstname VARCHAR NOT NULL,
+        account_lastname VARCHAR NOT NULL,
+        account_email VARCHAR NOT NULL,
+        account_password VARCHAR NOT NULL,
+        account_type account_type NOT NULL DEFAULT 'Client'
     );
