@@ -1,7 +1,13 @@
 const pool = require("../database/")
 
 async function getClassifications() {
-  return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+  try {
+    const data = await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+    return data.rows
+  } catch (error) {
+    console.error("getClassifications error: " + error)
+    return [] // Fallback to empty array
+  }
 }
 
 async function getInventoryByClassificationId(classification_id) {
@@ -15,7 +21,8 @@ async function getInventoryByClassificationId(classification_id) {
     )
     return data.rows
   } catch (error) {
-    console.error("getclassificationsbyid error " + error)
+    console.error("getInventoryByClassificationId error: " + error)
+    throw error // Pass to error middleware
   }
 }
 
@@ -30,7 +37,8 @@ async function getInventoryById(inv_id) {
     )
     return data.rows[0]
   } catch (error) {
-    console.error("getInventoryById error " + error)
+    console.error("getInventoryById error: " + error)
+    throw error // Pass to error middleware
   }
 }
 
