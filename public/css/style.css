@@ -5,7 +5,7 @@ body {
 }
 
 header {
-  background-color: #333;
+  background-color: #371fed;
   color: white;
   padding: 1rem;
 }
@@ -84,4 +84,14 @@ button:hover {
 .vehicle-card img {
   max-width: 100%;
   height: auto;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
 }

@@ -1,0 +1,46 @@
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
+
+<main>
+  <h1>Login</h1>
+
+  <% if (messages.error) { %>
+  <ul class="error">
+    <% messages.error.forEach(err => { %>
+    <li><%= err %></li>
+    <% }); %>
+  </ul>
+  <% } %>
+
+  <form id="loginForm" action="/account/login" method="POST">
+    <label for="account_email"
+      >Email:
+      <input
+        type="email"
+        name="account_email"
+        value="<%= locals.account_email || '' %>"
+        required
+    /></label>
+    <label for="account_password"
+      >Password: <input type="password" name="account_password" required
+    /></label>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      const email = e.target.account_email.value;
+      const password = e.target.account_password.value;
+      if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        alert("Valid email required.");
+        e.preventDefault();
+      }
+      if (!password) {
+        alert("Password required.");
+        e.preventDefault();
+      }
+    });
+  </script>
+</main>
+
+<%- include('../partials/footer') %>

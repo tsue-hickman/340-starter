@@ -89,31 +89,80 @@ File Structure
 │ ├── assignment2.sql
 │ └── rebuild.sql
 ├── models/
-│ ├── inventory-model.js
-│ └── account-model.js
+│ └── inventory-model.js
 ├── public/
 │ ├── css/
 │ │ └── style.css
 │ └── images/
 │ ├── site/
+│ │ ├── favicon-32x32.png
+│ │ ├── home.jpg
+│ │ ├── icon.png
+│ │ ├── own_today.png
+│ │ ├── small_check.jpg
+│ │ └── small_check.png
 │ ├── upgrades/
+│ │ ├── bumper-stickers.png
+│ │ ├── flame-decals.png
+│ │ ├── flux-cap.png
+│ │ └── hub-caps.png
 │ └── vehicles/
+│ ├── aerocar.jpg
+│ ├── aerocar-tn.jpg
+│ ├── aventador.jpg
+│ ├── aventador-tn.jpg
+│ ├── batmobile.jpg
+│ ├── batmobile-tn.jpg
+│ ├── camaro.jpg
+│ ├── camaro-tn.jpg
+│ ├── crwn-vic.jpg
+│ ├── crwn-vic-tn.jpg
+│ ├── delorean.jpg
+│ ├── delorean-tn.jpg
+│ ├── dog-car.jpg
+│ ├── dog-car-tn.jpg
+│ ├── escalade.jpg
+│ ├── escalade-tn.jpg
+│ ├── fire-truck.jpg
+│ ├── fire-truck-tn.jpg
+│ ├── hummer.jpg
+│ ├── hummer-tn.jpg
+│ ├── mechanic.jpg
+│ ├── mechanic-tn.jpg
+│ ├── model-t.jpg
+│ ├── model-t-tn.jpg
+│ ├── monster-truck.jpg
+│ ├── monster-truck-tn.jpg
+│ ├── mystery-van.jpg
+│ ├── mystery-van-tn.jpg
+│ ├── no-image.jpg
+│ ├── no-image-tn.jpg
+│ ├── survan.jpg
+│ ├── survan-tn.jpg
+│ ├── wrangler.jpg
+│ └── wrangler-tn.jpg
 ├── routes/
 │ ├── inventoryRoute.js
 │ └── static.js
 ├── utilities/
-│ └── index.js
+│ ├── index.js
+│ └── inventory-validation.js
 ├── views/
 │ ├── layouts/
 │ │ └── layout.ejs
 │ ├── partials/
+│ │ ├── footer.ejs
 │ │ ├── head.ejs
 │ │ ├── header.ejs
-│ │ ├── navigation.ejs
-│ │ └── footer.ejs
+│ │ └── navigation.ejs
 │ ├── inventory/
+│ │ ├── add-classification.ejs
+│ │ ├── add-inventory.ejs
 │ │ ├── classification.ejs
-│ │ └── detail.ejs
+│ │ ├── delete-inventory.ejs
+│ │ ├── detail.ejs
+│ │ ├── edit-inventory.ejs
+│ │ └── management.ejs
 │ ├── errors/
 │ │ └── error.ejs
 │ └── index.ejs

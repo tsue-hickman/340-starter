@@ -1,0 +1,79 @@
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
+
+<main>
+  <h1>Register</h1>
+
+  <% if (messages.error) { %>
+  <ul class="error">
+    <% messages.error.forEach(err => { %>
+    <li><%= err %></li>
+    <% }); %>
+  </ul>
+  <% } %>
+
+  <form id="registerForm" action="/account/register" method="POST">
+    <label for="account_firstname"
+      >First Name:
+      <input
+        type="text"
+        name="account_firstname"
+        value="<%= locals.account_firstname || '' %>"
+        required
+    /></label>
+    <label for="account_lastname"
+      >Last Name:
+      <input
+        type="text"
+        name="account_lastname"
+        value="<%= locals.account_lastname || '' %>"
+        required
+    /></label>
+    <label for="account_email"
+      >Email:
+      <input
+        type="email"
+        name="account_email"
+        value="<%= locals.account_email || '' %>"
+        required
+    /></label>
+    <label for="account_password"
+      >Password:
+      <input
+        type="password"
+        name="account_password"
+        required
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{12,}$"
+    /></label>
+    <p>
+      Password requirements: 12+ chars, 1 uppercase, 1 lowercase, 1 number, 1
+      special.
+    </p>
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      const firstname = e.target.account_firstname.value;
+      const lastname = e.target.account_lastname.value;
+      const email = e.target.account_email.value;
+      const password = e.target.account_password.value;
+      if (!firstname) alert("First name required.");
+      if (!lastname) alert("Last name required.");
+      if (!email || !/\S+@\S+\.\S+/.test(email)) alert("Valid email required.");
+      if (
+        !password ||
+        password.length < 12 ||
+        !/[a-z]/.test(password) ||
+        !/[A-Z]/.test(password) ||
+        !/\d/.test(password) ||
+        !/[^a-zA-Z0-9]/.test(password)
+      ) {
+        alert("Password must meet requirements.");
+        e.preventDefault();
+      }
+    });
+  </script>
+</main>
+
+<%- include('../partials/footer') %>

@@ -2,7 +2,7 @@
 include('../partials/navigation') %>
 
 <main>
-  <h1>Inventory Management</h1>
+  <h1>Welcome, <%= account.account_firstname %></h1>
 
   <% if (messages.success) { %>
   <p class="success"><%= messages.success %></p>
@@ -14,10 +14,9 @@ include('../partials/navigation') %>
   </ul>
   <% } %>
 
-  <ul>
-    <li><a href="/inv/add-classification">Add New Classification</a></li>
-    <li><a href="/inv/add-inventory">Add New Inventory Item</a></li>
-  </ul>
+  <p>Email: <%= account.account_email %></p>
+  <a href="/account/update/<%= account.account_id %>">Update Account</a>
+  <a href="/account/logout">Logout</a>
 </main>
 
 <%- include('../partials/footer') %>
