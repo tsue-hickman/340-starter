@@ -37,3 +37,6 @@ const host = "0.0.0.0"
 app.listen(port, host, () => {
   console.log(`trial app listening on ${host}:${port}`)
 })
+
+const invRouter = require("./routes/inventoryRoute");
+app.use("/inv", invRouter);

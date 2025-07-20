@@ -1,10 +1,7 @@
-<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
-include('../partials/navigation') %>
-
+<%- include('../partials/header') %>
 <main>
-  <% if (title) { %>
   <h1><%= title %></h1>
-  <% } else { %> <% res.redirect('/') %> <% } %> <%# messages() %> <%- grid %>
+  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %>
+  <%- grid %>
 </main>
-
 <%- include('../partials/footer') %>

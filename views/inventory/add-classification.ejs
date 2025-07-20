@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+<main>
+  <h1>Add New Classification</h1>
+  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %> <%
+  if (locals.errors) { %>
+  <ul class="error-list">
+    <% locals.errors.forEach(error => { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+  <% } %>
+  <form id="classificationForm" action="/inv/add-classification" method="post">
+    <label for="classification_name">Classification Name:</label>
+    <input
+      type="text"
+      id="classification_name"
+      name="classification_name"
+      required
+      value="<%= locals.classification_name || '' %>"
+    />
+    <button type="submit">Add Classification</button>
+  </form>
+</main>
+<%- include('../partials/footer') %>

@@ -1,0 +1,16 @@
+<%- include('../partials/header') %>
+<main>
+  <h1>Vehicle Management</h1>
+  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %>
+  <p><a href="/inv/add-classification">Add New Classification</a></p>
+  <p><a href="/inv/add-inventory">Add New Vehicle</a></p>
+  <h2>Inventory by Classification</h2>
+  <% if (classificationSelect) { %>
+  <form action="/inv/type/" method="get">
+    <label for="classification_id">Select Classification:</label>
+    <%- classificationSelect %>
+    <button type="submit">View Inventory</button>
+  </form>
+  <% } %>
+</main>
+<%- include('../partials/footer') %>

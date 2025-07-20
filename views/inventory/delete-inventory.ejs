@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<main>
+  <h1><%= title %></h1>
+  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %>
+  <p>Confirm Deletion - This action is permanent.</p>
+  <form id="deleteForm" action="/inv/delete/" method="post">
+    <label>Make:</label>
+    <p><%= inv_make %></p>
+    <label>Model:</label>
+    <p><%= inv_model %></p>
+    <label>Year:</label>
+    <p><%= inv_year %></p>
+    <label>Price:</label>
+    <p><%= inv_price %></p>
+    <input type="hidden" name="inv_id" value="<%= inv_id %>" />
+    <button type="submit">Delete Vehicle</button>
+  </form>
+</main>
+<%- include('../partials/footer') %>
