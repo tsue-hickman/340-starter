@@ -1,50 +1,60 @@
-/* Query 1: Select all classifications */
-SELECT
-    *
-FROM
-    classification
-ORDER BY
-    classification_name;
+-- database/assignment2.sql
+-- 1. Insert Tony Stark
+INSERT INTO
+    public.account (
+        account_firstname,
+        account_lastname,
+        account_email,
+        account_password
+    )
+VALUES
+    (
+        'Tony',
+        'Stark',
+        'tony@starkent.com',
+        'Iam1ronM@n'
+    );
 
-/* Query 2: Select all vehicles from inventory */
-SELECT
-    *
-FROM
-    inventory
-ORDER BY
-    inv_year DESC;
-
-/* Query 3: Select vehicles by classification name */
-SELECT
-    i.*
-FROM
-    inventory i
-    JOIN classification c ON i.classification_id = c.classification_id
+-- 2. Update Tony Stark to Admin
+UPDATE public.account
+SET
+    account_type = 'Admin'
 WHERE
-    c.classification_name = 'SUV';
+    account_email = 'tony@starkent.com';
 
-/* Query 4: Count vehicles per classification */
-SELECT
-    c.classification_name,
-    COUNT(i.inv_id) as vehicle_count
-FROM
-    classification c
-    LEFT JOIN inventory i ON c.classification_id = i.classification_id
-GROUP BY
-    c.classification_name
-ORDER BY
-    c.classification_name;
+-- 3. Delete Tony Stark
+DELETE FROM public.account
+WHERE
+    account_email = 'tony@starkent.com';
 
-/* Query 5: Select vehicle details with classification name */
+-- 4. Update GM Hummer description
+UPDATE public.inventory
+SET
+    inv_description = REPLACE(
+        inv_description,
+        'small interiors',
+        'a huge interior'
+    )
+WHERE
+    inv_make = 'GM'
+    AND inv_model = 'Hummer';
+
+-- 5. Select Sport category vehicles
 SELECT
     i.inv_make,
     i.inv_model,
-    i.inv_year,
     c.classification_name
 FROM
-    inventory i
-    JOIN classification c ON i.classification_id = c.classification_id
+    public.inventory i
+    INNER JOIN public.classification c ON i.classification_id = c.classification_id
 WHERE
-    i.inv_year >= 2020
-ORDER BY
-    i.inv_year DESC;
+    c.classification_name = 'Sport';
+
+-- 6. Update image paths
+UPDATE public.inventory
+SET
+    inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/')
+WHERE
+    inv_image LIKE '/images/%'
+    AND inv_image NOT LIKE '/images/vehicles/%';

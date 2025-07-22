@@ -1,4 +1,6 @@
 /* Drop tables and types if they exist */
+DROP TABLE IF EXISTS reviews;
+
 DROP TABLE IF EXISTS account;
 
 DROP TABLE IF EXISTS inventory;
@@ -104,6 +106,18 @@ VALUES
         20000,
         'Red',
         4
+    ),
+    (
+        'GM',
+        'Hummer',
+        2006,
+        'Rugged off-road vehicle with a huge interior',
+        '/images/vehicles/hummer.jpg',
+        '/images/vehicles/hummer-tn.jpg',
+        30000.00,
+        50000,
+        'Black',
+        4
     );
 
 /* Create account table */
@@ -116,3 +130,35 @@ CREATE TABLE
         account_password VARCHAR NOT NULL,
         account_type account_type NOT NULL DEFAULT 'Client'
     );
+
+/* Create reviews table for enhancement */
+CREATE TABLE
+    reviews (
+        review_id SERIAL PRIMARY KEY,
+        inv_id INTEGER REFERENCES inventory (inv_id),
+        account_id INTEGER REFERENCES account (account_id),
+        review_text TEXT NOT NULL,
+        review_rating INTEGER NOT NULL,
+        review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+/* Query 4: Update GM Hummer description */
+UPDATE public.inventory
+SET
+    inv_description = REPLACE(
+        inv_description,
+        'small interiors',
+        'a huge interior'
+    )
+WHERE
+    inv_make = 'GM'
+    AND inv_model = 'Hummer';
+
+/* Query 6: Update image paths */
+UPDATE public.inventory
+SET
+    inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/')
+WHERE
+    inv_image LIKE '/images/%'
+    AND inv_image NOT LIKE '/images/vehicles/%';

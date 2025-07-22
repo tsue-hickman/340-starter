@@ -1,34 +1,24 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
   <h1>Add New Classification</h1>
   <p>Note: Classification name cannot contain spaces or special characters.</p>
-
-  <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-
+  <%- include('../partials/messages') %>
   <form id="addClassForm" action="/inv/add-classification" method="POST">
-    <label for="classification_name"
-      >Classification Name:
+    <label for="classification_name">
+      Classification Name:
       <input
         type="text"
         name="classification_name"
         id="classification_name"
+        value="<%= locals.classification_name || '' %>"
         required
         pattern="^[a-zA-Z0-9]+$"
       />
     </label>
     <button type="submit">Add Classification</button>
   </form>
-
   <script>
-    // Client-side validation
     document.getElementById("addClassForm").addEventListener("submit", (e) => {
       const name = document.getElementById("classification_name").value;
       if (!name) {
@@ -41,5 +31,4 @@ include('../partials/navigation') %>
     });
   </script>
 </main>
-
 <%- include('../partials/footer') %>

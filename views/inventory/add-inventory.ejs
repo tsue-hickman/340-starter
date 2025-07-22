@@ -1,17 +1,8 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
   <h1>Add New Inventory Item</h1>
-
-  <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-
+  <%- include('../partials/messages') %>
   <form id="addInvForm" action="/inv/add-inventory" method="POST">
     <label for="classification_id"
       >Classification: <%- classificationList %></label
@@ -24,27 +15,32 @@ include('../partials/navigation') %>
         id="inv_make"
         value="<%= locals.inv_make || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="inv_model"
       >Model:
       <input
         type="text"
         name="inv_model"
+        id="inv_model"
         value="<%= locals.inv_model || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="inv_year"
       >Year:
       <input
         type="text"
         name="inv_year"
+        id="inv_year"
         value="<%= locals.inv_year || '' %>"
         required
         pattern="^\d{4}$"
-    /></label>
+      />
+    </label>
     <label for="inv_description"
       >Description:
-      <textarea name="inv_description" required>
+      <textarea name="inv_description" id="inv_description" required>
 <%= locals.inv_description || '' %></textarea
       >
     </label>
@@ -53,49 +49,57 @@ include('../partials/navigation') %>
       <input
         type="text"
         name="inv_image"
+        id="inv_image"
         value="<%= locals.inv_image || '/images/vehicles/no-image.jpg' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="inv_thumbnail"
       >Thumbnail Path:
       <input
         type="text"
         name="inv_thumbnail"
+        id="inv_thumbnail"
         value="<%= locals.inv_thumbnail || '/images/vehicles/no-image-tn.jpg' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="inv_price"
       >Price:
       <input
         type="number"
         step="0.01"
         name="inv_price"
+        id="inv_price"
         value="<%= locals.inv_price || '' %>"
         required
         min="0"
-    /></label>
+      />
+    </label>
     <label for="inv_miles"
       >Miles:
       <input
         type="number"
         name="inv_miles"
+        id="inv_miles"
         value="<%= locals.inv_miles || '' %>"
         required
         min="0"
-    /></label>
+      />
+    </label>
     <label for="inv_color"
       >Color:
       <input
         type="text"
         name="inv_color"
+        id="inv_color"
         value="<%= locals.inv_color || '' %>"
         required
-    /></label>
+      />
+    </label>
     <button type="submit">Add Item</button>
   </form>
-
   <script>
-    // Client-side validation for all inputs
     document.getElementById("addInvForm").addEventListener("submit", (e) => {
       const form = e.target;
       const classification = form.classification_id.value;
@@ -108,7 +112,6 @@ include('../partials/navigation') %>
       const price = parseFloat(form.inv_price.value);
       const miles = parseInt(form.inv_miles.value);
       const color = form.inv_color.value;
-
       if (!classification) {
         alert("Please choose a classification.");
         e.preventDefault();
@@ -143,5 +146,4 @@ include('../partials/navigation') %>
     });
   </script>
 </main>
-
 <%- include('../partials/footer') %>

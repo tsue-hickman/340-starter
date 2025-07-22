@@ -81,6 +81,7 @@ File Structure
 ├── package.json
 ├── server.js
 ├── controllers/
+│ ├── accountController.js
 │ ├── baseController.js
 │ └── invController.js
 ├── database/
@@ -89,10 +90,24 @@ File Structure
 │ ├── assignment2.sql
 │ └── rebuild.sql
 ├── models/
+│ ├── account-model.js
 │ └── inventory-model.js
+├── node_modules/
+│ ├── bin/
+│ ├── pnpm/
+│ ├── connect-flash/
+│ ├── css340/
+│ ├── dotenv/
+│ ├── ejs/
+│ ├── express/
+│ ├── express-ejs-layouts/
+│ ├── express-session/
+│ ├── express-validator/
+│ ├── nodemon/
+│ └── ...
 ├── public/
 │ ├── css/
-│ │ └── style.css
+│ │ └── styles.css
 │ └── images/
 │ ├── site/
 │ │ ├── favicon-32x32.png
@@ -107,10 +122,10 @@ File Structure
 │ │ ├── flux-cap.png
 │ │ └── hub-caps.png
 │ └── vehicles/
+│ ├── adventador.jpg
+│ ├── adventador-tn.jpg
 │ ├── aerocar.jpg
 │ ├── aerocar-tn.jpg
-│ ├── aventador.jpg
-│ ├── aventador-tn.jpg
 │ ├── batmobile.jpg
 │ ├── batmobile-tn.jpg
 │ ├── camaro.jpg
@@ -142,31 +157,41 @@ File Structure
 │ ├── wrangler.jpg
 │ └── wrangler-tn.jpg
 ├── routes/
-│ ├── inventoryRoute.js
+│ ├── accountRoutes.js
+│ ├── inventoryRoutes.js
 │ └── static.js
 ├── utilities/
 │ ├── index.js
 │ └── inventory-validation.js
 ├── views/
+│ ├── account/
+│ │ ├── account-management.ejs
+│ │ ├── login.ejs
+│ │ ├── register.ejs
+│ │ └── update.ejs
+│ ├── errors/
+│ │ └── error.ejs
+│ ├── inventory/
+│ │ ├── add-classification.ejs
+│ │ ├── add-inventory.ejs
+│ │ ├── add-review.ejs
+│ │ ├── admin.ejs
+│ │ ├── classification.ejs
+│ │ ├── delete-inventory.ejs
+│ │ ├── detail.ejs
+│ │ ├── edit-inventory.ejs
+│ │ ├── management.ejs
+│ │ └── search.ejs
 │ ├── layouts/
 │ │ └── layout.ejs
 │ ├── partials/
 │ │ ├── footer.ejs
 │ │ ├── head.ejs
 │ │ ├── header.ejs
-│ │ └── navigation.ejs
-│ ├── inventory/
-│ │ ├── add-classification.ejs
-│ │ ├── add-inventory.ejs
-│ │ ├── classification.ejs
-│ │ ├── delete-inventory.ejs
-│ │ ├── detail.ejs
-│ │ ├── edit-inventory.ejs
-│ │ └── management.ejs
-│ ├── errors/
-│ │ └── error.ejs
+│ │ ├── navigation.ejs
+│ │ └── index.ejs
 │ └── index.ejs
-└── README-cse340.md
+└── README.md
 
 Setup Instructions
 

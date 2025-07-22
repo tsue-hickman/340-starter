@@ -23,7 +23,10 @@ async function getInventoryByClassificationId(classification_id) {
 async function getInventoryById(inv_id) {
   try {
     const data = await pool.query(
-      `SELECT * FROM public.inventory WHERE inv_id = $1`,
+      `SELECT i.*, c.classification_name 
+       FROM public.inventory i 
+       JOIN public.classification c ON i.classification_id = c.classification_id 
+       WHERE i.inv_id = $1`,
       [inv_id]
     );
     return data.rows[0];
@@ -78,52 +81,11 @@ async function deleteInventory(inv_id) {
   }
 }
 
-module.exports = {
-  getClassifications,
-  getInventoryByClassificationId,
-  getInventoryById,
-  addClassification,
-  addInventory,
-  updateInventory,
-  deleteInventory
-};
-
-// ... (keep existing functions)
-
-async function updateInventory(inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) {
-  try {
-    const sql = "UPDATE public.inventory SET inv_make = $1, inv_model = $2, inv_year = $3, inv_description = $4, inv_image = $5, inv_thumbnail = $6, inv_price = $7, inv_miles = $8, inv_color = $9, classification_id = $10 WHERE inv_id = $11 RETURNING *";
-    return await pool.query(sql, [inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id, inv_id]);
-  } catch (error) {
-    console.error("updateInventory error: " + error);
-    return null;
-  }
-}
-
-async function deleteInventory(inv_id) {
-  try {
-    const sql = "DELETE FROM public.inventory WHERE inv_id = $1";
-    return await pool.query(sql, [inv_id]);
-  } catch (error) {
-    console.error("deleteInventory error: " + error);
-    return null;
-  }
-}
-
-module.exports = {
-  getClassifications,
-  getInventoryByClassificationId,
-  getInventoryById,
-  addClassification,
-  addInventory,
-  updateInventory,
-  deleteInventory
-};
-
 async function searchInventory(search_term) {
   try {
     const sql = "SELECT * FROM public.inventory WHERE inv_make ILIKE $1 OR inv_model ILIKE $1 OR inv_description ILIKE $1";
-    return await pool.query(sql, [`%${search_term}%`]);
+    const data = await pool.query(sql, [`%${search_term}%`]);
+    return data;
   } catch (error) {
     console.error("searchInventory error: " + error);
     return null;
@@ -133,12 +95,34 @@ async function searchInventory(search_term) {
 async function addReview(inv_id, account_id, review_text, review_rating) {
   try {
     const sql = "INSERT INTO reviews (inv_id, account_id, review_text, review_rating) VALUES ($1, $2, $3, $4) RETURNING *";
-    return await pool.query(sql, [inv_id, account_id, review_text, review_rating]);
+    const data = await pool.query(sql, [inv_id, account_id, review_text, parseInt(review_rating)]);
+    return data.rows[0];
   } catch (error) {
     console.error("addReview error: " + error);
     return null;
   }
 }
-module.exports.addReview = addReview;
 
-module.exports.searchInventory = searchInventory;
+async function getReviewsByInventoryId(inv_id) {
+  try {
+    const sql = "SELECT * FROM reviews WHERE inv_id = $1 ORDER BY review_date DESC";
+    const data = await pool.query(sql, [inv_id]);
+    return data;
+  } catch (error) {
+    console.error("getReviewsByInventoryId error: " + error);
+    return null;
+  }
+}
+
+module.exports = {
+  getClassifications,
+  getInventoryByClassificationId,
+  getInventoryById,
+  addClassification,
+  addInventory,
+  updateInventory,
+  deleteInventory,
+  searchInventory,
+  addReview,
+  getReviewsByInventoryId
+};

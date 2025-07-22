@@ -1,7 +1,31 @@
-<%- include('../partials/header') %>
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
 <main>
   <h1><%= title %></h1>
-  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %>
-  <%- detail %>
+  <%- include('../partials/messages') %> <%- detail %> <% if (locals.account) {
+  %>
+  <p>
+    <a href="/inv/add-review/<%= inv_id %>" title="Add Review">Add Review</a>
+  </p>
+  <% } %>
+  <h2>Reviews</h2>
+  <% if (locals.reviews && reviews.length > 0) { %>
+  <ul>
+    <% reviews.forEach(review => { %>
+    <li>
+      <p><strong>Rating:</strong> <%= review.review_rating %>/5</p>
+      <p><%= review.review_text %></p>
+      <p>
+        <em
+          >Posted on <%= new Date(review.review_date).toLocaleDateString()
+          %></em
+        >
+      </p>
+    </li>
+    <% }); %>
+  </ul>
+  <% } else { %>
+  <p>No reviews yet.</p>
+  <% } %>
 </main>
 <%- include('../partials/footer') %>

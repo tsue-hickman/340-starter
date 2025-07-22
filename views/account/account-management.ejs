@@ -1,22 +1,21 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
-  <h1>Welcome, <%= account.account_firstname %></h1>
-
-  <% if (messages.success) { %>
-  <p class="success"><%= messages.success %></p>
-  <% } %> <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
+  <h1>Account Management</h1>
+  <%- include('../partials/messages') %> <% if (locals.account) { %>
+  <h2>Welcome <%= account.account_firstname %></h2>
+  <% if (account.account_type === 'Employee' || account.account_type ===
+  'Admin') { %>
+  <h3>Inventory Management</h3>
+  <p><a href="/inv/" title="Manage Inventory">Manage Inventory</a></p>
   <% } %>
-
-  <p>Email: <%= account.account_email %></p>
-  <a href="/account/update/<%= account.account_id %>">Update Account</a>
-  <a href="/account/logout">Logout</a>
+  <p>
+    <a href="/account/update/<%= account.account_id %>" title="Update Account"
+      >Update Account Information</a
+    >
+  </p>
+  <% } else { %>
+  <p>Please <a href="/account/login">login</a> to manage your account.</p>
+  <% } %>
 </main>
-
 <%- include('../partials/footer') %>

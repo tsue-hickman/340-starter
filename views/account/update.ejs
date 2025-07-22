@@ -1,52 +1,99 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
   <h1>Update Account</h1>
-
-  <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-
+  <%- include('../partials/messages') %>
+  <h2>Account Update</h2>
   <form id="updateForm" action="/account/update" method="POST">
-    <input type="hidden" name="account_id" value="<%= account_id %>" />
+    <input
+      type="hidden"
+      name="account_id"
+      value="<%= locals.account_id || '' %>"
+    />
     <label for="account_firstname"
       >First Name:
       <input
         type="text"
         name="account_firstname"
+        id="account_firstname"
         value="<%= locals.account_firstname || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="account_lastname"
       >Last Name:
       <input
         type="text"
         name="account_lastname"
+        id="account_lastname"
         value="<%= locals.account_lastname || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="account_email"
       >Email:
       <input
         type="email"
         name="account_email"
+        id="account_email"
         value="<%= locals.account_email || '' %>"
         required
-    /></label>
+      />
+    </label>
     <button type="submit">Update</button>
   </form>
-
+  <h2>Change Password</h2>
+  <p>
+    Password must be 12+ characters with at least 1 uppercase, 1 lowercase, 1
+    number, and 1 symbol.
+  </p>
+  <form id="passwordForm" action="/account/update-password" method="POST">
+    <input
+      type="hidden"
+      name="account_id"
+      value="<%= locals.account_id || '' %>"
+    />
+    <label for="account_password"
+      >New Password:
+      <input
+        type="password"
+        name="account_password"
+        id="account_password"
+        required
+      />
+    </label>
+    <button type="submit">Change Password</button>
+  </form>
   <script>
     document.getElementById("updateForm").addEventListener("submit", (e) => {
-      // Similar validation as register
-      // ...
+      const firstname = e.target.account_firstname.value;
+      const lastname = e.target.account_lastname.value;
+      const email = e.target.account_email.value;
+      if (!firstname) {
+        alert("First name required.");
+        e.preventDefault();
+      } else if (!lastname) {
+        alert("Last name required.");
+        e.preventDefault();
+      } else if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        alert("Valid email required.");
+        e.preventDefault();
+      }
+    });
+    document.getElementById("passwordForm").addEventListener("submit", (e) => {
+      const password = e.target.account_password.value;
+      if (!password) {
+        alert("Password required.");
+        e.preventDefault();
+      } else if (
+        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{12,}/.test(password)
+      ) {
+        alert(
+          "Password must be 12+ characters with 1 uppercase, 1 lowercase, 1 number, 1 symbol."
+        );
+        e.preventDefault();
+      }
     });
   </script>
 </main>
-
 <%- include('../partials/footer') %>

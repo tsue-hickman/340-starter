@@ -1,34 +1,41 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
-  <h1>Add Review for Inventory <%= inv_id %></h1>
-  <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-  <form action="/inv/add-review/<%= inv_id %>" method="POST">
-    <label
+  <h1>Add Review</h1>
+  <%- include('../partials/messages') %>
+  <form id="reviewForm" action="/inv/add-review/<%= inv_id %>" method="POST">
+    <label for="review_text"
       >Review:
-      <textarea name="review_text" required>
+      <textarea name="review_text" id="review_text" required>
 <%= locals.review_text || '' %></textarea
       >
     </label>
-    <label
+    <label for="review_rating"
       >Rating (1-5):
       <input
         type="number"
         name="review_rating"
+        id="review_rating"
         value="<%= locals.review_rating || '' %>"
         required
         min="1"
         max="5"
-    /></label>
+      />
+    </label>
     <button type="submit">Submit Review</button>
   </form>
+  <script>
+    document.getElementById("reviewForm").addEventListener("submit", (e) => {
+      const text = e.target.review_text.value;
+      const rating = parseInt(e.target.review_rating.value);
+      if (!text) {
+        alert("Review text required.");
+        e.preventDefault();
+      } else if (isNaN(rating) || rating < 1 || rating > 5) {
+        alert("Rating must be 1-5.");
+        e.preventDefault();
+      }
+    });
+  </script>
 </main>
-
 <%- include('../partials/footer') %>
