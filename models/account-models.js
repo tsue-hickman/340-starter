@@ -51,4 +51,25 @@ async function updatePassword(account_id, account_password) {
   }
 }
 
+async function getAllAccounts() {
+  try {
+    return await pool.query("SELECT account_id, account_firstname, account_lastname, account_email, account_type FROM account");
+  } catch (error) {
+    console.error("getAllAccounts error: " + error);
+    return null;
+  }
+}
+
+async function updateAccountType(account_id, account_type) {
+  try {
+    const sql = "UPDATE account SET account_type = $1 WHERE account_id = $2 RETURNING *";
+    return await pool.query(sql, [account_type, account_id]);
+  } catch (error) {
+    console.error("updateAccountType error: " + error);
+    return null;
+  }
+}
+module.exports.getAllAccounts = getAllAccounts;
+module.exports.updateAccountType = updateAccountType;
+
 module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, updateAccount, updatePassword };

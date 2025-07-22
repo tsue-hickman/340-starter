@@ -1,0 +1,67 @@
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
+
+<main>
+  <h1>Edit <%= inv_make %> <%= inv_model %></h1>
+  <% if (messages.error) { %>
+  <ul class="error">
+    <% messages.error.forEach(err => { %>
+    <li><%= err %></li>
+    <% }); %>
+  </ul>
+  <% } %>
+  <form action="/inv/update/" method="POST">
+    <input type="hidden" name="inv_id" value="<%= inv_id %>" />
+    <label>Classification: <%- classificationList %></label>
+    <label
+      >Make:
+      <input type="text" name="inv_make" value="<%= inv_make %>" required
+    /></label>
+    <label
+      >Model:
+      <input type="text" name="inv_model" value="<%= inv_model %>" required
+    /></label>
+    <label
+      >Year:
+      <input
+        type="text"
+        name="inv_year"
+        value="<%= inv_year %>"
+        required
+        pattern="\d{4}"
+    /></label>
+    <label
+      >Description:
+      <textarea name="inv_description" required>
+<%= inv_description %></textarea
+      >
+    </label>
+    <label
+      >Image:
+      <input type="text" name="inv_image" value="<%= inv_image %>" required
+    /></label>
+    <label
+      >Thumbnail:
+      <input
+        type="text"
+        name="inv_thumbnail"
+        value="<%= inv_thumbnail %>"
+        required
+    /></label>
+    <label
+      >Price:
+      <input type="number" name="inv_price" value="<%= inv_price %>" required
+    /></label>
+    <label
+      >Miles:
+      <input type="number" name="inv_miles" value="<%= inv_miles %>" required
+    /></label>
+    <label
+      >Color:
+      <input type="text" name="inv_color" value="<%= inv_color %>" required
+    /></label>
+    <button type="submit">Update</button>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>

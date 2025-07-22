@@ -245,3 +245,154 @@ invCont.deleteInventory = async function (req, res, next) {
 };
 
 module.exports = invCont;
+
+// ... (keep existing functions)
+
+invCont.buildEditInventory = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getInventoryById(inv_id);
+  const classificationList = await utilities.buildClassificationList(itemData.classification_id);
+  res.render("inventory/edit-inventory", {
+    title: `Edit ${itemData.inv_make} ${itemData.inv_model}`,
+    nav,
+    classificationList,
+    inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id,
+    errors: null,
+  });
+};
+
+invCont.updateInventory = [
+  body('inv_make').trim().escape().notEmpty().withMessage('Required.'),
+  body('inv_model').trim().escape().notEmpty().withMessage('Required.'),
+  body('inv_year').trim().escape().isLength({ min: 4, max: 4 }).withMessage('4 digits.'),
+  body('inv_description').trim().escape().notEmpty().withMessage('Required.'),
+  body('inv_image').trim().escape().notEmpty().withMessage('Required.'),
+  body('inv_thumbnail').trim().escape().notEmpty().withMessage('Required.'),
+  body('inv_price').trim().escape().isNumeric().withMessage('Numeric.'),
+  body('inv_miles').trim().escape().isInt().withMessage('Integer.'),
+  body('inv_color').trim().escape().notEmpty().withMessage('Required.'),
+  body('classification_id').trim().escape().isInt().withMessage('Valid ID.'),
+  async (req, res, next) => {
+    const { inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let nav = await utilities.getNav();
+      let classificationList = await utilities.buildClassificationList(classification_id);
+      req.flash('error', errors.array().map(err => err.msg));
+      return res.render('inventory/edit-inventory', {
+        title: `Edit ${inv_make} ${inv_model}`,
+        nav,
+        classificationList,
+        inv_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id,
+        errors: errors.array(),
+      });
+    }
+    const result = await invModel.updateInventory(inv_id, inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id);
+    if (result) {
+      req.flash('success', 'Inventory updated!');
+      res.redirect('/inv/');
+    } else {
+      req.flash('error', 'Update failed.');
+      res.redirect(`/inv/edit/${inv_id}`);
+    }
+  }
+];
+
+invCont.buildDeleteInventory = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getInventoryById(inv_id);
+  res.render("inventory/delete-inventory", {
+    title: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
+    nav,
+    inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_price: itemData.inv_price,
+    errors: null,
+  });
+};
+
+invCont.deleteInventory = async (req, res, next) => {
+  const inv_id = parseInt(req.body.inv_id);
+  const result = await invModel.deleteInventory(inv_id);
+  if (result) {
+    req.flash('success', 'Inventory deleted!');
+    res.redirect('/inv/');
+  } else {
+    let nav = await utilities.getNav();
+    const itemData = await invModel.getInventoryById(inv_id);
+    req.flash('error', 'Deletion failed.');
+    res.render("inventory/delete-inventory", {
+      title: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
+      nav,
+      inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+      errors: null,
+    });
+  }
+};
+
+invCont.buildSearch = async (req, res, next) => {
+  let nav = await utilities.getNav();
+  let searchResults = [];
+  if (req.query.search_term) {
+    searchResults = await invModel.searchInventory(req.query.search_term);
+  }
+  res.render("inventory/search", { title: "Search Results", nav, searchResults });
+};
+
+invCont.buildAddReview = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  res.render("inventory/add-review", { title: "Add Review", nav, inv_id, errors: null });
+};
+
+invCont.addReview = [
+  body('review_text').trim().escape().notEmpty().withMessage('Required.'),
+  body('review_rating').trim().escape().isInt({ min: 1, max: 5 }).withMessage('1-5 rating.'),
+  async (req, res, next) => {
+    const { inv_id, review_text, review_rating } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let nav = await utilities.getNav();
+      req.flash('error', errors.array().map(err => err.msg));
+      return res.render('inventory/add-review', { title: "Add Review", nav, inv_id, errors: errors.array(), review_text, review_rating });
+    }
+    const result = await invModel.addReview(inv_id, req.session.account.account_id, review_text, review_rating);
+    if (result) {
+      req.flash('success', 'Review added!');
+      res.redirect(`/inv/detail/${inv_id}`);
+    } else {
+      req.flash('error', 'Review failed.');
+      res.redirect(`/inv/add-review/${inv_id}`);
+    }
+  }
+];
+
+module.exports = invCont;

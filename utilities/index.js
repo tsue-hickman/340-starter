@@ -86,8 +86,55 @@ Util.buildClassificationList = async function (classification_id = null) {
   return classificationList;
 };
 
+
+
+module.exports = Util;
+
+const invModel = require("../models/inventory-model");
+
+const Util = {};
+
+Util.getNav = async function (req, res, next) {
+  try {
+    let data = await invModel.getClassifications();
+    let list = "<ul>";
+    list += '<li><a href="/" title="Home page">Home</a></li>';
+    if (data && data.length > 0) {
+      data.forEach((row) => {
+        list += "<li>";
+        list += '<a href="/inv/type/' + row.classification_id + '" title="See our inventory of ' + row.classification_name + ' vehicles">' + row.classification_name + "</a>";
+        list += "</li>";
+      });
+    } else {
+      list += '<li><a href="#" title="No classifications available">No Categories</a></li>';
+    }
+    list += "</ul>";
+    return list;
+  } catch (error) {
+    console.error("getNav error: " + error);
+    return '<ul><li><a href="/" title="Home page">Home</a></li></ul>';
+  }
+};
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications();
+  let classificationList = '<select name="classification_id" id="classificationList" required>';
+  classificationList += "<option value=''>Choose a Classification</option>";
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"';
+    if (classification_id != null && row.classification_id == classification_id) {
+      classificationList += " selected ";
+    }
+    classificationList += ">" + row.classification_name + "</option>";
+  });
+  classificationList += "</select>";
+  return classificationList;
+};
+
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+
 Util.checkLogin = (req, res, next) => {
-  if (req.session.account) {
+  if (req.session.account || req.cookies.jwt) {
     next();
   } else {
     req.flash("error", "Please login.");
@@ -96,4 +143,3 @@ Util.checkLogin = (req, res, next) => {
 };
 
 module.exports = Util;
-

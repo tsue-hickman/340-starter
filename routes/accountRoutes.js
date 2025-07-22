@@ -7,9 +7,9 @@ router.get("/login", utilities.handleErrors(accountCont.buildLogin));
 router.post("/login", accountCont.accountLogin);
 router.get("/register", utilities.handleErrors(accountCont.buildRegister));
 router.post("/register", accountCont.registerAccount);
-router.get("/", utilities.handleErrors(accountCont.buildAccountManagement));
-router.get("/update/:account_id", utilities.handleErrors(accountCont.buildUpdateAccount));
-router.post("/update", accountCont.updateAccount);
-router.get("/logout", accountCont.logout);
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountCont.buildAccountManagement));
+router.get("/update/:account_id", utilities.checkLogin, utilities.handleErrors(accountCont.buildUpdateAccount));
+router.post("/update", utilities.checkLogin, accountCont.updateAccount);
+router.get("/logout", utilities.checkLogin, accountCont.logout);
 
 module.exports = router;

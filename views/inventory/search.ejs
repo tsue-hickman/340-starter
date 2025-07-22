@@ -1,0 +1,21 @@
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
+
+<main>
+  <h1>Search Results</h1>
+  <form action="/inv/search" method="GET">
+    <input type="text" name="search_term" placeholder="Search..." />
+    <button type="submit">Search</button>
+  </form>
+  <% if (searchResults && searchResults.rows.length > 0) { %>
+  <ul>
+    <% searchResults.rows.forEach(item => { %>
+    <li><%= item.inv_make %> <%= item.inv_model %></li>
+    <% }); %>
+  </ul>
+  <% } else { %>
+  <p>No results found.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>
