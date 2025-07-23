@@ -6,25 +6,25 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
-const utilities = require("./utilities");
 const session = require('express-session');
 const flash = require('connect-flash');
 const { expressjwt: jwt } = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const utilities = require("./utilities/");
 
-// View engine setup
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
-// Static files FIRST - before any authentication
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(static);
+app.get("/", utilities.handleErrors(baseController.buildHome));
+app.use("/inv", inventoryRoute);
+app.use("/account", accountRoute);
 
-// Session and flash middleware
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your_secret_key',
   resave: false,
@@ -36,58 +36,44 @@ app.use((req, res, next) => {
   next();
 });
 
-// JWT Configuration - EXCLUDE static file paths
+// JWT Configuration
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}.auth0.com/.well-known/jwks.json`
+    jwksUri: `https://${process.env.AUTH0_DOMAIN || 'your-auth0-domain'}/.well-known/jwks.json`
   }),
-  audience: process.env.AUTH0_AUDIENCE,
-  issuer: `https://${process.env.AUTH0_DOMAIN}.auth0.com/`,
+  audience: process.env.AUTH0_AUDIENCE || 'your-api-audience',
+  issuer: `https://${process.env.AUTH0_DOMAIN || 'your-auth0-domain'}/`,
   algorithms: ['RS256']
-}).unless({ 
-  path: [
-    '/account/login', 
-    '/account/register', 
-    '/',
-    '/favicon.ico',
-    // Exclude all static file paths
-    /^\/images\/.*/,
-    /^\/css\/.*/,
-    /^\/js\/.*/,
-    /.*\.(css|js|png|jpg|jpeg|gif|ico|svg)$/
-  ] 
-});
+}).unless({ path: ['/account/login', '/account/register', '/'] });
 
 app.use(checkJwt);
 
-// Routes
-app.get("/", utilities.handleErrors(baseController.buildHome));
-app.use("/inv", inventoryRoute);
-app.use("/account", accountRoute);
-
-// 404 Handler
-app.use(utilities.handleErrors((req, res) => {
-  res.status(404).render('errors/error', { 
-    title: '404 - Not Found', 
-    message: 'Sorry, page not found.' 
+app.use(async (req, res, next) => {
+  const nav = await utilities.getNav();
+  res.status(404).render('errors/error', {
+    title: '404 - Not Found',
+    message: 'Sorry, page not found.',
+    nav
   });
-}));
+});
 
-// Error Handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
+  const nav = await utilities.getNav();
   if (err.name === 'UnauthorizedError') {
-    res.status(401).render('errors/error', { 
-      title: '401 - Unauthorized', 
-      message: 'Please login to access this page.' 
+    res.status(401).render('errors/error', {
+      title: '401 - Unauthorized',
+      message: 'Please login to access this page.',
+      nav
     });
   } else {
     console.error(err.stack);
-    res.status(500).render('errors/error', { 
-      title: 'Server Error', 
-      message: 'Something went wrong!' 
+    res.status(500).render('errors/error', {
+      title: 'Server Error',
+      message: 'Something went wrong!',
+      nav
     });
   }
 });

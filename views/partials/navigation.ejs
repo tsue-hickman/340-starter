@@ -1,2 +1,7 @@
-<%- nav %>
-<nav aria-label="Main navigation"><%- nav %></nav>
+<nav aria-label="Main navigation">
+  <% if (typeof nav !== 'undefined') { %> <%- nav %> <% } else { %>
+  <ul>
+    <li><a href="/" title="Home page">Home</a></li>
+  </ul>
+  <% } %>
+</nav>
