@@ -1,5 +1,5 @@
 const pool = require("../database");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
   try {

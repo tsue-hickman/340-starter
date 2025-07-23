@@ -1,6 +1,6 @@
 const utilities = require("../utilities/");
 const accountModel = require("../models/account-model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 
@@ -74,7 +74,7 @@ accountCont.accountLogin = async (req, res) => {
 
 accountCont.buildAccountManagement = async (req, res) => {
   let nav = await utilities.getNav();
-  res.render("account/management", {
+  res.render("account/account-management", {
     title: "Account Management",
     nav,
     errors: null,

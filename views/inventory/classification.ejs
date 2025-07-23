@@ -1,7 +1,7 @@
-<%- include('../partials/header') %>
+<%- include('../partials/head') %> <%- include('../partials/header') %> <%-
+include('../partials/navigation') %>
 <main>
   <h1><%= title %></h1>
-  <% if (locals.messages) { %> <%- include('../partials/messages') %> <% } %>
-  <%- grid %>
+  <%- include('../partials/messages') %> <%- grid %>
 </main>
 <%- include('../partials/footer') %>

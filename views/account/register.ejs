@@ -1,79 +1,75 @@
 <%- include('../partials/head') %> <%- include('../partials/header') %> <%-
 include('../partials/navigation') %>
-
 <main>
   <h1>Register</h1>
-
-  <% if (messages.error) { %>
-  <ul class="error">
-    <% messages.error.forEach(err => { %>
-    <li><%= err %></li>
-    <% }); %>
-  </ul>
-  <% } %>
-
+  <%- include('../partials/messages') %>
   <form id="registerForm" action="/account/register" method="POST">
     <label for="account_firstname"
       >First Name:
       <input
         type="text"
         name="account_firstname"
+        id="account_firstname"
         value="<%= locals.account_firstname || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="account_lastname"
       >Last Name:
       <input
         type="text"
         name="account_lastname"
+        id="account_lastname"
         value="<%= locals.account_lastname || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="account_email"
       >Email:
       <input
         type="email"
         name="account_email"
+        id="account_email"
         value="<%= locals.account_email || '' %>"
         required
-    /></label>
+      />
+    </label>
     <label for="account_password"
-      >Password:
+      >Password (12+ chars, 1 upper, 1 lower, 1 number, 1 symbol):
       <input
         type="password"
         name="account_password"
+        id="account_password"
         required
-        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{12,}$"
-    /></label>
-    <p>
-      Password requirements: 12+ chars, 1 uppercase, 1 lowercase, 1 number, 1
-      special.
-    </p>
+      />
+    </label>
     <button type="submit">Register</button>
   </form>
-
   <script>
     document.getElementById("registerForm").addEventListener("submit", (e) => {
       const firstname = e.target.account_firstname.value;
       const lastname = e.target.account_lastname.value;
       const email = e.target.account_email.value;
       const password = e.target.account_password.value;
-      if (!firstname) alert("First name required.");
-      if (!lastname) alert("Last name required.");
-      if (!email || !/\S+@\S+\.\S+/.test(email)) alert("Valid email required.");
-      if (
+      if (!firstname) {
+        alert("First name required.");
+        e.preventDefault();
+      } else if (!lastname) {
+        alert("Last name required.");
+        e.preventDefault();
+      } else if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        alert("Valid email required.");
+        e.preventDefault();
+      } else if (
         !password ||
-        password.length < 12 ||
-        !/[a-z]/.test(password) ||
-        !/[A-Z]/.test(password) ||
-        !/\d/.test(password) ||
-        !/[^a-zA-Z0-9]/.test(password)
+        !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{12,}/.test(password)
       ) {
-        alert("Password must meet requirements.");
+        alert(
+          "Password must be 12+ characters with 1 uppercase, 1 lowercase, 1 number, 1 symbol."
+        );
         e.preventDefault();
       }
     });
   </script>
 </main>
-
 <%- include('../partials/footer') %>
