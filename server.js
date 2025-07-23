@@ -6,7 +6,7 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
-const utilities = require("./utilities"); // ADDED THIS LINE
+const utilities = require("./utilities");
 const session = require('express-session');
 const flash = require('connect-flash');
 const { expressjwt: jwt } = require('express-jwt');
@@ -18,13 +18,13 @@ app.set("views", "./views");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
-// Static files and parsing
+// Static files FIRST - before any authentication
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(static);
 
-// Session and flash middleware (MOVED BEFORE ROUTES)
+// Session and flash middleware
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your_secret_key',
   resave: false,
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// JWT Configuration
+// JWT Configuration - EXCLUDE static file paths
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -47,7 +47,19 @@ const checkJwt = jwt({
   audience: process.env.AUTH0_AUDIENCE,
   issuer: `https://${process.env.AUTH0_DOMAIN}.auth0.com/`,
   algorithms: ['RS256']
-}).unless({ path: ['/account/login', '/account/register', '/'] });
+}).unless({ 
+  path: [
+    '/account/login', 
+    '/account/register', 
+    '/',
+    '/favicon.ico',
+    // Exclude all static file paths
+    /^\/images\/.*/,
+    /^\/css\/.*/,
+    /^\/js\/.*/,
+    /.*\.(css|js|png|jpg|jpeg|gif|ico|svg)$/
+  ] 
+});
 
 app.use(checkJwt);
 
@@ -58,16 +70,25 @@ app.use("/account", accountRoute);
 
 // 404 Handler
 app.use(utilities.handleErrors((req, res) => {
-  res.status(404).render('errors/error', { title: '404 - Not Found', message: 'Sorry, page not found.' });
+  res.status(404).render('errors/error', { 
+    title: '404 - Not Found', 
+    message: 'Sorry, page not found.' 
+  });
 }));
 
 // Error Handler
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).render('errors/error', { title: '401 - Unauthorized', message: 'Please login to access this page.' });
+    res.status(401).render('errors/error', { 
+      title: '401 - Unauthorized', 
+      message: 'Please login to access this page.' 
+    });
   } else {
     console.error(err.stack);
-    res.status(500).render('errors/error', { title: 'Server Error', message: 'Something went wrong!' });
+    res.status(500).render('errors/error', { 
+      title: 'Server Error', 
+      message: 'Something went wrong!' 
+    });
   }
 });
 
