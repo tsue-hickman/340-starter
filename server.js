@@ -17,7 +17,8 @@ app.set("views", "./views");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
-app.use(express.static("public"));
+app.use(express.static("public", { index: false }));
+console.log("Serving static files from:", process.cwd() + "/public");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(static);
